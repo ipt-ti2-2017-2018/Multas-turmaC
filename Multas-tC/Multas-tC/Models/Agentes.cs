@@ -27,7 +27,7 @@ namespace Multas_tC.Models {
 
       // local de trabalho do Agente
       [Required(ErrorMessage = "A {0} é de preenchimento obrigatório")]
-      [RegularExpression ("[A-Za-z0-9ç -]+",
+      [RegularExpression ("[A-Za-z0-9áéíóúàèìòùâêîôûãõçäëöüïñ -]+",
              ErrorMessage ="Escreva um nome v]alido de uma esquadra...")]
       public string Esquadra { get; set; }
 
