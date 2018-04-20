@@ -66,8 +66,18 @@ namespace Multas_tC.Controllers {
                                   HttpPostedFileBase carregaFotografia) {
          // gerar o ID do novo Agente
          int novoID = 0;
-         novoID = db.Agentes.Max(a => a.ID) + 1;
+         if(db.Agentes.Count() != 0) {
+            novoID = db.Agentes.Max(a => a.ID) + 1;
+         }
+         else {
+            novoID = 1;
+         }
          agente.ID = novoID; // atribuir o ID deste Agente
+         // **************************************************
+         // outra hipótese de validar a atribuição de ID
+         // try { }
+         // catch(Exception) { }
+         // **************************************************
 
          // var auxiliar
          string nomeFicheiro = "Agente_" + novoID + ".jpg";
@@ -92,20 +102,25 @@ namespace Multas_tC.Controllers {
          }
          /// formatar o tamanho da imagem ---> fazer em casa
          /// será q o ficheiro é uma imagem? ---> fazer em casa
-         
+
          // ModelState.IsValid --> confronta os dados recebidos
          // como o modelo, para verificar se 
          // o que recebeu é o que deveria ter sido recebido
          if(ModelState.IsValid) {
-            // adiciona o Agente à estrutura de dados
-            db.Agentes.Add(agente);
-            // efetuam um COMMIT à BD
-            db.SaveChanges();
-            // guardar o ficheio no disco rígido
-            carregaFotografia.SaveAs(caminho);
+            try {
+               // adiciona o Agente à estrutura de dados
+               db.Agentes.Add(agente);
+               // efetuam um COMMIT à BD
+               db.SaveChanges();
+               // guardar o ficheio no disco rígido
+               carregaFotografia.SaveAs(caminho);
 
-            // redireciona o utilizador para a página do início
-            return RedirectToAction("Index");
+               // redireciona o utilizador para a página do início
+               return RedirectToAction("Index");
+            }
+            catch(Exception) {
+               ModelState.AddModelError("", "Ocorreu um erro na criação do Agente '" + agente.Nome + "'.");
+            }
          }
 
          // se aqui cheguei, é pq alguma coisa correu mal...
