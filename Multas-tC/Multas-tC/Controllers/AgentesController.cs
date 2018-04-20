@@ -36,7 +36,8 @@ namespace Multas_tC.Controllers {
 
          // caso não haja ID, nada é feito
          if(id == null) {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            // return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return RedirectToAction("Index");
          }
 
          // pesquisa os dados do Agente, cujo ID foi fornecido 
@@ -45,7 +46,8 @@ namespace Multas_tC.Controllers {
          // valida se foi encontrado algum Agente
          // se não foi encontrado, nada faz
          if(agentes == null) {
-            return HttpNotFound();
+            // return HttpNotFound();
+            return RedirectToAction("Index");
          }
 
          // apresenta na View os dados do Agente
@@ -131,11 +133,13 @@ namespace Multas_tC.Controllers {
       // GET: Agentes/Edit/5
       public ActionResult Edit(int? id) {
          if(id == null) {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            // return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return RedirectToAction("Index");
          }
          Agentes agentes = db.Agentes.Find(id);
          if(agentes == null) {
-            return HttpNotFound();
+            // return HttpNotFound();
+            return RedirectToAction("Index");
          }
          return View(agentes);
       }
@@ -161,14 +165,19 @@ namespace Multas_tC.Controllers {
       // GET: Agentes/Delete/5
       public ActionResult Delete(int? id) {
          if(id == null) {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            // return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return RedirectToAction("Index"); // redireciona para a página de início
          }
          Agentes agentes = db.Agentes.Find(id);
+
          if(agentes == null) {
-            return HttpNotFound();
+            // return HttpNotFound();
+            return RedirectToAction("Index");
          }
          return View(agentes);
       }
+
+
 
       // POST: Agentes/Delete/5
       [HttpPost, ActionName("Delete")]
