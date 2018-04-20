@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -61,28 +62,37 @@ namespace Multas_tC.Controllers {
       // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Create([Bind(Include = "Nome,Fotografia,Esquadra")] Agentes agente,
+      public ActionResult Create([Bind(Include = "Nome,Esquadra")] Agentes agente,
                                   HttpPostedFileBase carregaFotografia) {
+         // gerar o ID do novo Agente
+         int novoID = 0;
+         novoID = db.Agentes.Max(a => a.ID) + 1;
+         agente.ID = novoID; // atribuir o ID deste Agente
+
+         // var auxiliar
+         string nomeFicheiro = "Agente_" + novoID + ".jpg";
+         string caminho = "";
 
          /// primeiro q tudo, há que garantir q existe imagem
          if(carregaFotografia != null) {
             // a imagem existe
-
+            agente.Fotografia = nomeFicheiro;
+            // definir o nome do ficheiro e o seu caminho
+            caminho = Path.Combine(Server.MapPath("~/imagens/"), nomeFicheiro);
          }
          else {
             // não foi submetida uma imagem
 
-         }
+            // gerar mensagem de erro, para elucidar o utilizador do erro
+            ModelState.AddModelError("", "Não foi inserida uma imagem.");
 
-         /// escolher o nome da imagem
-         
+            // redirecionar o utilizador para a View,
+            // para que ele corriga os dados
+            return View(agente);
+         }
          /// formatar o tamanho da imagem ---> fazer em casa
          /// será q o ficheiro é uma imagem? ---> fazer em casa
-         /// guardar a imagem no disco rígido do servidor
-
-
-
-
+         
          // ModelState.IsValid --> confronta os dados recebidos
          // como o modelo, para verificar se 
          // o que recebeu é o que deveria ter sido recebido
@@ -91,6 +101,8 @@ namespace Multas_tC.Controllers {
             db.Agentes.Add(agente);
             // efetuam um COMMIT à BD
             db.SaveChanges();
+            // guardar o ficheio no disco rígido
+            carregaFotografia.SaveAs(caminho);
 
             // redireciona o utilizador para a página do início
             return RedirectToAction("Index");
