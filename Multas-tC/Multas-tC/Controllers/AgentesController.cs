@@ -174,11 +174,18 @@ namespace Multas_tC.Controllers {
       [HttpPost, ActionName("Delete")]
       [ValidateAntiForgeryToken]
       public ActionResult DeleteNewMethod(int id) {
-         Agentes agentes = db.Agentes.Find(id);
-         db.Agentes.Remove(agentes);
+         Agentes agente = db.Agentes.Find(id);
 
-         db.SaveChanges();
-         return RedirectToAction("Index");
+         try {
+            db.Agentes.Remove(agente);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+         }
+         catch(Exception) {
+            ModelState.AddModelError("", string.Format("aconteceu um erro com a eliminação do Agente '{0}', porque há multas associadas a ele.", agente.Nome));
+         }
+         // se aqui chego, é pq alguma coisa correu mal
+         return View(agente);
       }
 
       protected override void Dispose(bool disposing) {
