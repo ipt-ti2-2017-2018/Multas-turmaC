@@ -18,10 +18,20 @@ namespace Multas_tC.Controllers {
       // GET: Agentes
       public ActionResult Index() {
 
-         // (LINQ) db.Agentes.ToList() --> em SQL: SELECT * FROM Agentes 
+         // (LINQ) db.Agentes.ToList() --> 
+         // em SQL: SELECT * FROM Agentes ORDER BY Nome
          // lista de agentes, presentes na BD
-         return View(db.Agentes.ToList());
+
+         var listaAgentes = db.Agentes.ToList().OrderBy(a => a.Nome);
+
+         return View(listaAgentes);
       }
+
+
+
+
+
+
 
       // GET: Agentes/Details/5
       /// <summary>
