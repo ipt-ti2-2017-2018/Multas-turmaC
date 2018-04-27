@@ -22,7 +22,7 @@ namespace Multas_tC.Controllers {
          // em SQL: SELECT * FROM Agentes ORDER BY Nome
          // lista de agentes, presentes na BD
 
-         var listaAgentes = db.Agentes.ToList().OrderBy(a => a.Nome);
+         var listaAgentes = db.Agentes.OrderBy(a => a.Nome).ToList();
 
          return View(listaAgentes);
       }
