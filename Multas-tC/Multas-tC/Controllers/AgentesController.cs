@@ -157,19 +157,29 @@ namespace Multas_tC.Controllers {
       // POST: Agentes/Edit/5
       // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
       // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+      /// <summary>
+      /// Editar os dados de um Agente
+      /// </summary>
+      /// <param name="agente">dados do agente a editar</param>
+      /// <returns></returns>
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agentes) {
+      public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agente) {
+         /// a primeira ação a executar neste método é ajustar o nome da variável de entrada.
+         /// 'agentes' é um nome criado automaticamente e reflete o nome da classe,
+         /// mas como está no plural não é adequado, pois os dados referem-se a apenas um Agente
+
+
 
          if(ModelState.IsValid) {
             // update
-            db.Entry(agentes).State = EntityState.Modified;
+            db.Entry(agente).State = EntityState.Modified;
             // COMMIT
             db.SaveChanges();
 
             return RedirectToAction("Index");
          }
-         return View(agentes);
+         return View(agente);
       }
 
       // GET: Agentes/Delete/5
