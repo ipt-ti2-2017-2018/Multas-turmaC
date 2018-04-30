@@ -1,56 +1,71 @@
 ﻿@model Multas_tC.Models.Agentes
 
 @{
-    ViewBag.Title = "Edit";
+   ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Agentes</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
+@*
+   Quando se deseja efetuar o upload de um ficheiro,
+   esta instrução é insuficiente
+   @using(Html.BeginForm())
+   é necessário adicionar-lhe o parâmetro 'enctype = "multipart/form-data" '
+*@
+@using(Html.BeginForm("Edit",
+                      "Agentes",
+                      FormMethod.Post,
+                      new { enctype = "multipart/form-data" })) {
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Fotografia, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Fotografia, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Fotografia, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Esquadra, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Esquadra, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Esquadra, "", new { @class = "text-danger" })
-            </div>
-        </div>
+   @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+   <div class="form-horizontal">
+      <h4>Agentes</h4>
+      <hr />
+      @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+      @Html.HiddenFor(model => model.ID)
+
+      <div class="form-group">
+         @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+         <div class="col-md-10">
+            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+         </div>
+      </div>
+
+      <div class="form-group">
+         @Html.LabelFor(model => model.Fotografia, htmlAttributes: new { @class = "control-label col-md-2" })
+         <div class="col-md-10">
+            @* com a adição da opção de efetuar upload de uma imagem, estes objetos não são mais necessários
+               @Html.EditorFor(model => model.Fotografia, new { htmlAttributes = new { @class = "form-control" } })
+               @Html.ValidationMessageFor(model => model.Fotografia, "", new { @class = "text-danger" })*@
+
+            <input type="file" name="uploadFoto" style="color:blue;" accept=".jpg" />
+
+         </div>
+      </div>
+
+      <div class="form-group">
+         @Html.LabelFor(model => model.Esquadra, htmlAttributes: new { @class = "control-label col-md-2" })
+         <div class="col-md-10">
+            @Html.EditorFor(model => model.Esquadra, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Esquadra, "", new { @class = "text-danger" })
+         </div>
+      </div>
+
+      <div class="form-group">
+         <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+         </div>
+      </div>
+   </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+   @Html.ActionLink("Back to List", "Index")
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
