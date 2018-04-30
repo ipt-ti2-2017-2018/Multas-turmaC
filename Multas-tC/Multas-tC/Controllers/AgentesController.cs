@@ -184,30 +184,53 @@ namespace Multas_tC.Controllers {
          /// responsável por enviar os dados do browser para o servidor,
          /// adicionando-lhe o parâmetro 'enctype = "multipart/form-data" '
 
+         /// quando se faz uma simples substituição de uma fotografia por outra,
+         /// mantendo o nome original, nem sempre os browsers atualizam, no ecrã,
+         /// a nova imagem, pela forma como fazem a gestão da 'cache'.
+         /// Por isso, é frequente alterar-se o nome da nova imagem, adicionando-lhe um termo
+         /// associado à data+hora da alteração.
+
+         // vars. auxiliares
+         string novoNome = "";
+         string nomeAntigo = "";
 
 
          if(ModelState.IsValid) {
             try {
-               // neste caso já existe um Agente
-               // apenas quero EDITAR os seus dados
+               /// se foi fornecida uma nova imagem,
+               /// preparam-se os dados para efetuar a alteração
+               if(uploadFoto != null) {
+                  /// antes de se fazer alguma coisa, preserva-se o nome antigo da imagem,
+                  /// para depois a remover do disco rígido do servidor
+                  nomeAntigo = agente.Fotografia;
+                  /// para o novo nome do ficheiro, vamos adicionar o termo gerado pelo timestamp
+                  /// devidamente formatado, mais
+                  /// A extensão do ficheiro é obtida automaticamente em vez de ser escrita de forma explícita
+                  novoNome = "Agente_" + agente.ID + DateTime.Now.ToString("_yyyyMMdd_hhmmss") + Path.GetExtension(uploadFoto.FileName).ToLower(); ;
+                  /// atualizar os dados do Agente com o novo nome
+                  agente.Fotografia = novoNome;
+                  /// guardar a nova imagem no disco rígido
+                  uploadFoto.SaveAs(Path.Combine(Server.MapPath("~/imagens/"), novoNome));
+               }
+
+               // guardar os dados do Agente
                db.Entry(agente).State = EntityState.Modified;
                // efetuar 'Commit'
                db.SaveChanges();
 
-               /// só no caso de submissão de uma nova fotografia
-               /// é que há necessidade de se gravar essa imagem.
-               /// Nesta primeira versão vamos simplesmente substituir a imagem anterior pela nova
-               /// mantendo o mesmo nome.
+               /// caso tenha sido fornecida uma nova imagem há necessidade de remover 
+               /// a antiga
                if(uploadFoto != null)
-                  uploadFoto.SaveAs(Path.Combine(Server.MapPath("~/imagens/"), agente.Fotografia));
+                  System.IO.File.Delete(Path.Combine(Server.MapPath("~/imagens/"), nomeAntigo));
 
 
+               // enviar os dados para a página inicial
                return RedirectToAction("Index");
 
             }
             catch(Exception) {
-
-               throw;
+               // caso haja um erro deve ser enviada uma mensagem para o utilizador
+               ModelState.AddModelError("", string.Format("Ocorreu um erro com a edição dos dados do agente {0}", agente.Nome));
             }
 
          }
