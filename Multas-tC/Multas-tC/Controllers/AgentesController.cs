@@ -13,7 +13,7 @@ namespace Multas_tC.Controllers {
    public class AgentesController : Controller {
 
       //cria um objeto privado que 'referencia' a BD
-      private MultasDb db = new MultasDb();
+      private ApplicationDbContext db = new ApplicationDbContext();
 
       // GET: Agentes
       public ActionResult Index() {

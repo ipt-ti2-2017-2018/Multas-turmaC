@@ -2,11 +2,11 @@
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using IdentitySample.Models;
+using Multas_tC.Models;
 using Owin;
 using System;
 
-namespace IdentitySample
+namespace Multas_tC
 {
     public partial class Startup
     {

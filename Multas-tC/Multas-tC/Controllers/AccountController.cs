@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using IdentitySample.Models;
+using Multas_tC.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -10,7 +10,13 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace IdentitySample.Controllers
+namespace Multas_tC.Controllers
+
+
+
+
+
+
 {
     [Authorize]
     public class AccountController : Controller
