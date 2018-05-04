@@ -192,6 +192,7 @@
     <Compile Include="Controllers\AgentesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MultasController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Global.asax.cs">
@@ -255,6 +256,11 @@
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Multas\Create.cshtml" />
+    <Content Include="Views\Multas\Delete.cshtml" />
+    <Content Include="Views\Multas\Details.cshtml" />
+    <Content Include="Views\Multas\Edit.cshtml" />
+    <Content Include="Views\Multas\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

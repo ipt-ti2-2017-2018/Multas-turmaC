@@ -37,6 +37,12 @@ namespace Multas_tC.Models {
       // aplicadas pelo Agente
       public virtual ICollection<Multas> ListaMultas { get; set; }
 
+      //*********************************************************
+      // criar FK 'virtual' para a autenticação
+      //*********************************************************
+    //  [Required]
+      public string UserName { get; set; }
+
 
    }
 }
