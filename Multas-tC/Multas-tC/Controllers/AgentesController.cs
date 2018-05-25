@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Multas_tC.Models;
 
 namespace Multas_tC.Controllers {
@@ -17,6 +18,12 @@ namespace Multas_tC.Controllers {
 
       // GET: Agentes
       public ActionResult Index() {
+
+         // recuperar os dados dos utilizadores
+         // para posterior utilização
+         var userAutenticado = db.Users.Find(User.Identity.GetUserId());
+
+
 
          // (LINQ) db.Agentes.ToList() --> 
          // em SQL: SELECT * FROM Agentes ORDER BY Nome
