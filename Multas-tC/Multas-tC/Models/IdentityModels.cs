@@ -14,17 +14,6 @@ namespace Multas_tC.Models {
    /// </summary>
    public class ApplicationUser : IdentityUser {
 
-      /// <summary>
-      /// adicionar atributos específicos de um utilizador
-      /// - nome
-      /// - apelido
-      /// - data de nascimento
-      /// </summary>
-      public string NomeProprio { get; set; }
-      public string Apelido { get; set; }
-      public DateTime? DataNascimento { get; set; }
-
-
       public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager) {
          // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
          var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -60,6 +49,8 @@ namespace Multas_tC.Models {
       public virtual DbSet<Condutores> Condutores { get; set; }
       public virtual DbSet<Agentes> Agentes { get; set; }
       public virtual DbSet<Multas> Multas { get; set; }
+      // adicionar a tabela para efetuar o registo dos dados dos utilizadores
+      public virtual DbSet<Utilizadores> Utilizadores { get; set; }
 
 
       protected override void OnModelCreating(DbModelBuilder modelBuilder) {

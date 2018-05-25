@@ -45,22 +45,22 @@ namespace Multas_tC
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+         // Uncomment the following lines to enable logging in with third party login providers
+         //app.UseMicrosoftAccountAuthentication(
+         //    clientId: "",
+         //    clientSecret: "");
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+         //app.UseTwitterAuthentication(
+         //   consumerKey: "",
+         //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+         app.UseFacebookAuthentication(
+            appId: "iuyu",
+            appSecret: "kljlkjlk");
 
-            //app.UseGoogleAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-        }
+         //app.UseGoogleAuthentication(
+         //    clientId: "",
+         //    clientSecret: "");
+      }
     }
 }

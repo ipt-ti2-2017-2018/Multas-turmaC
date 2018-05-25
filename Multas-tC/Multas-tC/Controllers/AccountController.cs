@@ -131,14 +131,38 @@ namespace Multas_tC.Controllers {
 
             var user = new ApplicationUser {
                UserName = model.Email,
-               Email = model.Email,
-               NomeProprio=model.NomeProprio,
-               Apelido=model.Apelido,
-               DataNascimento=model.DataNasc
+               Email = model.Email
+               //NomeProprio=model.NomeProprio,
+               //Apelido=model.Apelido,
+               //DataNascimento=model.DataNasc
             };
 
             var result = await UserManager.CreateAsync(user, model.Password);
+
             if(result.Succeeded) {
+               try {
+                  // registar os dados específicos de um utilizador
+                  Utilizadores userAutenticado = new Utilizadores();
+                  userAutenticado = model.Utilizador;
+                  userAutenticado.UserName = user.UserName;
+                  // guardar estes dados na BD
+                  ApplicationDbContext db = new ApplicationDbContext();
+                  db.Utilizadores.Add(userAutenticado);
+                  db.SaveChanges();
+               }
+               catch(Exception ex) {
+                  /// - gerar mesagem de erro no modelstate
+                  /// - eventualmente, destruir o USER recém-criado
+                  /// - registar, na BD, os dados do erro
+                  ///     - data
+                  ///     - hora
+                  ///     - controller
+                  ///     - método
+                  ///     - texto descritivo do erro (ex.message)
+                  ///     - outros atributos considerados úteis
+                  /// - eventualmente, enviar email para o Administrador do Sistema
+               }
+
                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");

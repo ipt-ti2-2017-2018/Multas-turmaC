@@ -21,8 +21,9 @@ namespace Multas_tC.Controllers {
 
          // recuperar os dados dos utilizadores
          // para posterior utilização
-         var userAutenticado = db.Users.Find(User.Identity.GetUserId());
-
+         // var userAutenticado = db.Users.Find(User.Identity.GetUserId());
+         var userAutenticado = db.Utilizadores
+                                 .Where(u => u.UserName.Equals(User.Identity.Name));
 
 
          // (LINQ) db.Agentes.ToList() --> 

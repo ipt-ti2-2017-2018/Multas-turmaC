@@ -73,10 +73,12 @@ namespace Multas_tC.Models {
       //**********************************************************************
       // atributos específicos do utilizador que se regista
 
-      public string NomeProprio { get; set; }
-      public string Apelido { get; set; }
-      [Display(Name ="Data de Nascimento")]
-      public DateTime DataNasc { get; set; }
+      public Utilizadores Utilizador { get; set; }
+
+      //public string NomeProprio { get; set; }
+      //public string Apelido { get; set; }
+      //[Display(Name ="Data de Nascimento")]
+      //public DateTime DataNasc { get; set; }
 
    }
 
