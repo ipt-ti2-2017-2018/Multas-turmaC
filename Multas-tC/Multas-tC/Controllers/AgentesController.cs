@@ -11,6 +11,16 @@ using Microsoft.AspNet.Identity;
 using Multas_tC.Models;
 
 namespace Multas_tC.Controllers {
+
+
+   //   [Authorize] // só as pessoas autenticadas, acedem a este recursos
+
+   //[Authorize(Roles = "Agentes")] // agora, além de autenticadas,
+   //                               // as pessoas têm de pertencer ao role 'Agentes'
+
+   [Authorize(Roles = "Agentes,GestorPessoal")] // agora, além de autenticadas,
+                                                // as pessoas têm de pertencer ao role 'Agentes'
+                                                // ou ao role 'GestorPessoal'
    public class AgentesController : Controller {
 
       //cria um objeto privado que 'referencia' a BD
@@ -73,6 +83,7 @@ namespace Multas_tC.Controllers {
       }
 
       // GET: Agentes/Create
+      [Authorize(Roles = "GestorPessoal")]
       public ActionResult Create() {
          return View();
       }
@@ -82,6 +93,7 @@ namespace Multas_tC.Controllers {
       // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
+      [Authorize(Roles = "GestorPessoal")]
       public ActionResult Create([Bind(Include = "Nome,Esquadra")] Agentes agente,
                                   HttpPostedFileBase carregaFotografia) {
          // gerar o ID do novo Agente
@@ -154,12 +166,24 @@ namespace Multas_tC.Controllers {
             // return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             return RedirectToAction("Index");
          }
-         Agentes agentes = db.Agentes.Find(id);
-         if(agentes == null) {
+
+         Agentes agente = db.Agentes.Find(id);
+
+         if(agente == null) {
             // return HttpNotFound();
             return RedirectToAction("Index");
          }
-         return View(agentes);
+
+         // o 'agente' existe
+         // será que tenho autorização para o editar?
+         if(User.IsInRole("GestorPessoal") ||
+            agente.UserName.Equals(User.Identity.Name)) {
+            return View(agente);
+         }
+         else {
+            // o 'user' não tem acesso
+            return RedirectToAction("Index");
+         }
       }
 
       // POST: Agentes/Edit/5
@@ -167,17 +191,26 @@ namespace Multas_tC.Controllers {
       // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agentes) {
+      public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agente) {
+
+         /// tb é necessário aqui validar se se tem autorização 
+         /// para editar estes dados...
+         /// - garantir que o utilizador pertence ao role 'GestorPessoal'
+         /// - ou o 'user' é dono dos dados
+         ///      - pesquisar na BD por um agente com o ID fornecido
+         ///      - comparar os dados do agente recuperado 
+         ///        com os dados da pessoa autenticada
+         ///          - se dados válidos, faço a edição
 
          if(ModelState.IsValid) {
             // update
-            db.Entry(agentes).State = EntityState.Modified;
+            db.Entry(agente).State = EntityState.Modified;
             // COMMIT
             db.SaveChanges();
 
             return RedirectToAction("Index");
          }
-         return View(agentes);
+         return View(agente);
       }
 
       // GET: Agentes/Delete/5

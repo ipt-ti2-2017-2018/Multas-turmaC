@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Multas_tC.Models;
 using Owin;
+using System;
 
 namespace Multas_tC {
 
@@ -44,6 +45,16 @@ namespace Multas_tC {
             roleManager.Create(role);
          }
 
+         // criar a Role 'GestorPessoal'
+         if(!roleManager.RoleExists("GestorPessoal")) {
+            // não existe a 'role'
+            // então, criar essa role
+            var role = new IdentityRole();
+            role.Name = "GestorPessoal";
+            roleManager.Create(role);
+         }
+
+
          // criar um utilizador 'Agente'
          var user = new ApplicationUser();
          user.UserName = "tania@mail.pt";
@@ -56,6 +67,24 @@ namespace Multas_tC {
          if(chkUser.Succeeded) {
             var result1 = userManager.AddToRole(user.Id, "Agentes");
          }
+
+         // criar um utilizador 'Agente'
+         //// var user = new ApplicationUser();
+         user.Id =  Guid.NewGuid().ToString();
+         user.UserName = "Andre@mail.pt";
+         user.Email = "Andre@mail.pt";
+         //  user.Nome = "Luís Freitas";
+         userPWD = "123_Asd";
+         chkUser = userManager.Create(user, userPWD);
+
+         //Adicionar o Utilizador à respetiva Role-Agente-
+         if(chkUser.Succeeded) {
+            var result1 = userManager.AddToRole(user.Id, "GestorPessoal");
+         }
+
+
+
+
       }
 
       // https://code.msdn.microsoft.com/ASPNET-MVC-5-Security-And-44cbdb97
